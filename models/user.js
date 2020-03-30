@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: "PASSWORDS MUST BETWEEN 6-16 CHARS"
         }
       }
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,

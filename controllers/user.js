@@ -34,7 +34,8 @@ class UserController {
                 console.log("LET'S CREATE NEW USER!");
                 return User.create({
                     email: req.body.email,
-                    password: req.body.password
+                    password: req.body.password,
+                    location: req.body.location
                 })
             }
         })
@@ -82,7 +83,8 @@ class UserController {
                     console.log(`LOGIN SUCCESS`);
                     payload = {
                         id: response.id,
-                        email: emailAddress
+                        email: emailAddress,
+                        location: response.location
                     }
                     // console.log(`payload is`);
                     // console.log(payload);

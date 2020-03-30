@@ -35,14 +35,17 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    ProjectId: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER
+    ProjectId: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Todo'
   });
   Todo.associate = function(models) {
     // associations can be defined here
+    Todo.belongsTo(models.Project)
   };
   return Todo;
 };

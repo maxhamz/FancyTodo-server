@@ -11,9 +11,15 @@ projectRoute.get('/:id', ProjectController.getProjectById)
 projectRoute.post('/', ProjectController.createProject)
 projectRoute.post('/invite', ProjectController.invite)
 
-// projectRoute.post('/todos', authorization, ProjectController.createTodo)
-// projectRoute.put('/todos/:id', authorization, ProjectController.updateTodo)
-// projectRoute.delete('/todos/:id', authorization, ProjectController.deleteTodo)
+
+/*
+    ALL AUTHENTICATED USERS MAY FETCH, CREATE OR INVITE A PROJECT,
+    BUT ONLY PROJECT MEMBERS MAY VIEW, CREATE, UPDATE OR DELETE THEIR OWN PROJECTS' TODOS
+ */
+projectRoute.get('/todos/:projectid', authorization, ProjectController.fetchTodos)
+projectRoute.post('/todos/:projectid', authorization, ProjectController.createTodo)
+// projectRoute.put('/todos/:projectid/:id', authorization, ProjectController.updateTodo)
+// projectRoute.delete('/todos//:projectid/:id', authorization, ProjectController.deleteTodo)
 
 
 

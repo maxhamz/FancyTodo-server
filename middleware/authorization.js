@@ -1,16 +1,16 @@
-const { Todo } = require("../models")
+const { Project } = require("../models")
 const  { customError }  = require("../helpers/customError.js")
 
 function authorization(req, res, next) {
 
     console.log(">>AUTHORIZATION<< \n");
     console.log(req.params)
-    let TodoId = +req.params.id
+    let projectId = +req.params.projectid
     let userId = req.decoded.id
-    Todo.findByPk(TodoId)
+    Project.findByPk(projectId)
         .then(response => {
-            console.log("Todo FOUND");
-            console.log(response);
+            console.log("PROJECT FOUND");
+            // console.log(response);
             if(response) {
                 if(response.UserId === userId) {
                     console.log("AUTHORIZATION SUCCESS");
