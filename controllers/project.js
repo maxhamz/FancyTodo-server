@@ -10,17 +10,10 @@ const {
 
 let user_id
 let project_id
-let puid
-let title
-let category
-let due
-let task_id
-let puser
 
 class ProjectController {
 
     static fetchProjects(req, res, next) {
-        console.log(">>> CONTROLLERS/PROJECT: FETCH PROJECTS");
         ProjectUser.findAll({
                 where: {
                     UserId: req.decoded.id
@@ -45,19 +38,18 @@ class ProjectController {
                 ]
             })
             .then(response => {
-                console.log("FETCHING ALL PROJECTS SUCCESS");
-                res.status(200).json({
-                    result: response
+                return res.status(200).json({
+                    data: response
                 })
             })
             .catch(err => {
-                console.log('ERROR FETCH ALL');
                 next(err)
             })
     }
 
+
     static getProjectById(req, res, next) {
-        console.log(">>> CONTROLLERS/PROJECT: FETCH PROJECT BY ID");
+
         ProjectUser.findOne({
                 where: {
                     id: +req.params.id,
@@ -82,11 +74,9 @@ class ProjectController {
                 ]
             })
             .then(response => {
-
                 if (response) {
-                    console.log("FETCH ONE PROJECT SUCCESS");
                     res.status(200).json({
-                        result: response
+                        data: response
                     })
                 } else {
                     throw new customError(404, 'NOT FOUND')
@@ -94,21 +84,18 @@ class ProjectController {
 
             })
             .catch(err => {
-                console.log('ERROR FETCH ONE');
                 next(err)
             })
     }
 
+
     static createProject(req, res, next) {
-        console.log(">>> CONTROLLERS/PROJECT: CREATE NEW PROJECT");
 
         Project.create({
                 UserId: req.decoded.id,
                 title: req.body.title
             })
             .then(response => {
-                console.log("SUCCESS CREATING PROJECT");
-                // console.log(response);
                 user_id = response.UserId
                 project_id = response.id
 
@@ -118,12 +105,9 @@ class ProjectController {
                     include: [User, Project]
                 })
             })
-            .then(response2 => {
-                console.log("SUCCESS CREATING PROJECTUSER");
-
-                // console.log(response2);
+            .then(response => {
                 res.status(201).json({
-                    result: response2
+                    data: response
                 })
 
             })
@@ -133,9 +117,9 @@ class ProjectController {
 
     }
 
+
     static invite(req, res, next) {
 
-        console.log(">>> CONTROLLERS/PROJECT: INVITE NEW PROJECT MEMBER");
         project_id = +req.body.projectId
 
         // CHECK IF USER EXIST IN DATABASE
@@ -148,8 +132,6 @@ class ProjectController {
 
                 // 
                 if (response) {
-                    console.log("USER IS");
-                    // console.log(response);
 
                     user_id = response.id
 
@@ -165,16 +147,10 @@ class ProjectController {
                     throw new customError(404, 'NOT FOUND')
                 }
             })
-            .then(response1 => {
-
-                console.log("WHAT'S VERDICT?");
-                // console.log(response1);
-
-                if (response1) {
-                    console.log("USER HAS BEEN ASSIGNED!");
+            .then(response => {
+                if (response) {
                     throw new customError(400, 'DUPLICATE ASSIGNMENT')
                 } else {
-                    console.log("WELCOME, NEW MEMBER!");
                     return ProjectUser.create({
                         UserId: user_id,
                         ProjectId: project_id
@@ -182,23 +158,104 @@ class ProjectController {
                 }
 
             })
-            .then(response2 => {
-                console.log("ASSIGNING NEW MEMBER SUCCESSFUL");
-                console.log(response2);
-                res.status(201).json({
-                    result: response2
+            .then(response => {
+                return res.status(201).json({
+                    data: response
                 })
             })
             .catch(err => {
                 next(err)
             })
 
+    }
+
+
+    static updateProject(req, res, next) {
+        Project.findOne({
+            where: {
+                id: +req.params.id,
+                UserId: req.decoded.id
+            },
+            include: [
+                {
+                    model: User,
+                    attributes: {
+                        exclude: [
+                            'password', 'createdAt', 'updatedAt'
+                        ]
+                    }
+                }
+            ]
+        })
+        .then(response => {
+            if (response) {
+                return Project.update({
+                    title: req.body.title,
+                    UserId: +req.body.userid
+                }, {
+                    where: {
+                        id: +req.params.id
+                    },
+                    returning: true
+                })
+
+            } else {
+                throw new customError(404, 'NOT FOUND')
+            }
+
+        })
+        .then(response => {
+            res.status(201).json({data: response[1][0]})
+        })
+        .catch(err => {
+            next(err)
+        })
 
     }
 
+
+    static dropProject(req, res, next) {
+        Project.findOne({
+            where: {
+                id: +req.params.id,
+                UserId: req.decoded.id
+            },
+            include: [
+                {
+                    model: User,
+                    attributes: {
+                        exclude: [
+                            'password', 'createdAt', 'updatedAt'
+                        ]
+                    }
+                }
+            ]
+        })
+        .then(response => {
+            if (response) {
+                return Project.destroy({
+                    where: {
+                        id: +req.params.id
+                    }
+                })
+
+            } else {
+                throw new customError(404, 'NOT FOUND')
+            }
+
+        })
+        .then(response => {
+            res.status(201).json({data: response})
+        })
+        .catch(err => {
+            next(err)
+        })
+
+    }
+
+
     static fetchTodos(req, res, next) {
 
-        console.log(">>> CONTROLLERS/PROJECT: FETCH A PROJECT'S ENTIRE TODOS");
         project_id = req.params.projectid
 
         ProjectUser.findOne({
@@ -209,22 +266,20 @@ class ProjectController {
             })
             .then(response => {
                 if (response) {
-                    console.log("PROJECT FOUND!");
-
                     return Todo.findAll({
                         where: {
                             ProjectId: response.ProjectId
-                        }
+                        },
+                        include: [Project]
                     })
 
                 } else {
                     throw new customError(404, 'NOT FOUND')
                 }
             })
-            .then(response1 => {
-                console.log("CORRESPONDING TODOS RETRIEVED");
-                res.status(200).json({
-                    result: response1
+            .then(response => {
+                return res.status(200).json({
+                    data: response
                 })
             })
             .catch(err => {
@@ -233,9 +288,9 @@ class ProjectController {
 
     }
 
+
     static createTodo(req, res, next) {
 
-        console.log(">>> CONTROLLERS/PROJECT: CREATE A NEW TODO FOR A PROJECT");
         project_id = req.params.projectid
 
         ProjectUser.findOne({
@@ -246,8 +301,6 @@ class ProjectController {
             })
             .then(response => {
                 if (response) {
-                    console.log("PROJECT FOUND!");
-
                     return Todo.create({
                         title: req.body.title,
                         description: req.body.description,
@@ -260,15 +313,114 @@ class ProjectController {
                     throw new customError(404, 'NOT FOUND')
                 }
             })
-            .then(response1 => {
-                console.log("NEW TODO CREATED");
-                res.status(201).json({
-                    result: response1
+            .then(response => {
+                return res.status(201).json({
+                    data: response
                 })
             })
             .catch(err => {
                 next(err)
             })
+    }
+
+
+    static updateTodo(req, res, next) {
+
+        // ENSURE PROJECT DO EXIST
+        Project.findOne({
+            where: {
+                id: +req.params.projectid
+            }
+        })
+        .then(response => {
+            
+            if(response) {
+
+                // AND MAKE SURE THE TODO WE'RE LOOKING ABOUT DO EXIST!
+                return Todo.findOne({
+                    where: {
+                        id: +req.params.todoid
+                    }
+                })
+            } else {
+                throw new customError(404, 'NOT FOUND')
+            } 
+        })
+        .then(response => {
+
+            if(response) {
+
+                return Todo.update({
+                    title: req.body.title,
+                    description: req.body.description,
+                    status: req.body.status,
+                    due_date: new Date(req.body.due_date)
+                }, {
+                    where: {
+                        id: +req.params.todoid,
+                        ProjectId: project_id
+                    },
+                    returning: true
+                })
+
+            } else {
+                throw new customError(404, 'NOT FOUND')
+            }
+            
+        })
+        .then(response => {
+            res.status(201).json({data: response})
+        })
+        .catch(err => {
+            next(err)
+        })
+
+    }
+
+
+    static deleteTodo (req, res, next) {
+
+        // ENSURE PROJECT DO EXIST
+        Project.findOne({
+            where: {
+                id: +req.params.projectid
+            }
+        })
+        .then(response => {
+            
+            if(response) {
+
+                // AND MAKE SURE THE TODO WE'RE LOOKING ABOUT DO EXIST!
+                return Todo.findOne({
+                    where: {
+                        id: +req.params.todoid
+                    }
+                })
+
+            } else {
+                throw new customError(404, 'NOT FOUND')
+            }
+        })
+        .then(response => {
+            if(response) {
+                return Todo.destroy({
+                    where: {
+                        id: +req.params.todoid,
+                        ProjectId: project_id
+                    },
+                    returning: true
+                })
+            } else {
+                throw new customError(404, 'NOT FOUND')
+            }
+            
+        })
+        .then(response => {
+            res.status(201).json({data: response})
+        })
+        .catch(err => {
+            next(err)
+        })
 
     }
 

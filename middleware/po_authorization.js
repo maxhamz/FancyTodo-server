@@ -1,15 +1,11 @@
-const { ProjectUser } = require("../models")
+const { Project } = require("../models")
 const  { customError }  = require("../helpers/customError.js")
 
-function authorization(req, res, next) {
-    let projectId = +req.params.projectid
+function po_authorization(req, res, next) {
+
+    let projectId = +req.params.id
     let userId = req.decoded.id
-    ProjectUser.findOne({
-        where: {
-            ProjectId: projectId,
-            UserId: userId
-        }
-    })
+    Project.findByPk(projectId)
         .then(response => {
             if(response) {
                 if(response.UserId === userId) {
@@ -26,4 +22,4 @@ function authorization(req, res, next) {
         })
 }
 
-module.exports = { authorization }
+module.exports = { po_authorization }

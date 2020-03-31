@@ -28,7 +28,7 @@
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 201 <br />
     **Content:**<br>
      `{
     "id": 6,
@@ -71,29 +71,11 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** <br>
-    `RangeError [ERR_HTTP_INVALID_STATUS_CODE]: Invalid status code: undefined
-    at ServerResponse.writeHead (_http_server.js:248:11)
-    at ServerResponse._implicitHeader (_http_server.js:239:8)
-    at write_ (_http_outgoing.js:650:9)
-    at ServerResponse.end (_http_outgoing.js:760:5)
-    at ServerResponse.send (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:221:10)
-    at ServerResponse.json (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:267:15)
-    at errorHandler (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/errorHandling.js:47:30)
-    at Layer.handle_error (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:71:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:315:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at authenticate (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/authenticate.js:37:10)
-    at Layer.handle [as handle_request] (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:317:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)`
+     `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
 <br>
 <hr>
 <br>
@@ -159,29 +141,11 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     <br>
-    `RangeError [ERR_HTTP_INVALID_STATUS_CODE]: Invalid status code: undefined
-    at ServerResponse.writeHead (_http_server.js:248:11)
-    at ServerResponse._implicitHeader (_http_server.js:239:8)
-    at write_ (_http_outgoing.js:650:9)
-    at ServerResponse.end (_http_outgoing.js:760:5)
-    at ServerResponse.send (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:221:10)
-    at ServerResponse.json (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:267:15)
-    at errorHandler (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/errorHandling.js:47:30)
-    at Layer.handle_error (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:71:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:315:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at authenticate (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/authenticate.js:37:10)
-    at Layer.handle [as handle_request] (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:317:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)`
+    `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
 
 <br>
 <hr>
@@ -315,29 +279,11 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** <BR>
-    `RangeError [ERR_HTTP_INVALID_STATUS_CODE]: Invalid status code: undefined
-    at ServerResponse.writeHead (_http_server.js:248:11)
-    at ServerResponse._implicitHeader (_http_server.js:239:8)
-    at write_ (_http_outgoing.js:650:9)
-    at ServerResponse.end (_http_outgoing.js:760:5)
-    at ServerResponse.send (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:221:10)
-    at ServerResponse.json (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:267:15)
-    at errorHandler (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/errorHandling.js:47:30)
-    at Layer.handle_error (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:71:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:315:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at authenticate (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/authenticate.js:37:10)
-    at Layer.handle [as handle_request] (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:317:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)`
+    `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
 <br>
 <hr>
 <br>
@@ -388,29 +334,11 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** <BR>
-    `RangeError [ERR_HTTP_INVALID_STATUS_CODE]: Invalid status code: undefined
-    at ServerResponse.writeHead (_http_server.js:248:11)
-    at ServerResponse._implicitHeader (_http_server.js:239:8)
-    at write_ (_http_outgoing.js:650:9)
-    at ServerResponse.end (_http_outgoing.js:760:5)
-    at ServerResponse.send (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:221:10)
-    at ServerResponse.json (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/response.js:267:15)
-    at errorHandler (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/errorHandling.js:47:30)
-    at Layer.handle_error (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:71:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:315:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:635:15
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:260:14)
-    at authenticate (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/middlewares/authenticate.js:37:10)
-    at Layer.handle [as handle_request] (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:317:13)
-    at /home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:335:12)
-    at next (/home/sandboxadmin/PROJECTS/HACKTIV8/PHASE2/todo-server/node_modules/express/lib/router/index.js:275:10)`
+    `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
 <br>
 <hr>
 <br>
