@@ -19,7 +19,7 @@ function errorHandler(err, req, res, next) {
         })
     } 
     else if (err.name ===  'TokenExpiredError') {
-        res.status(400).json({
+        res.status(401).json({
             errors: [err.message]
         })
     } 

@@ -38,9 +38,15 @@ class ProjectController {
                 ]
             })
             .then(response => {
-                return res.status(200).json({
-                    data: response
-                })
+
+                if(response) {
+                    return res.status(200).json({
+                        data: response
+                    })
+                } else {
+                    throw customError(404, 'NOT FOUND')
+                }
+                
             })
             .catch(err => {
                 next(err)
@@ -106,7 +112,7 @@ class ProjectController {
                 })
             })
             .then(response => {
-                res.status(201).json({
+                return res.status(201).json({
                     data: response
                 })
 
@@ -205,7 +211,7 @@ class ProjectController {
 
         })
         .then(response => {
-            res.status(201).json({data: response[1][0]})
+            res.status(200).json({data: response[1][0]})
         })
         .catch(err => {
             next(err)
@@ -245,7 +251,7 @@ class ProjectController {
 
         })
         .then(response => {
-            res.status(201).json({data: response})
+            res.status(200).json({data: response})
         })
         .catch(err => {
             next(err)
@@ -369,7 +375,7 @@ class ProjectController {
             
         })
         .then(response => {
-            res.status(201).json({data: response})
+            res.status(200).json({data: response})
         })
         .catch(err => {
             next(err)

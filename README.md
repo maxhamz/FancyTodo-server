@@ -1,353 +1,5 @@
 # FancyTodo-server
 
-**FANCY TODO**
------------
-
-**Create Todo**
-----
-  Create new to-do activity.
-
-* **URL**
-
-  /todos/
-
-* **Method:**
-
-  `POST`
-  
-*  **URL Params**
-    None
-
-* **Data Params**<br>
-  `{ "title" : "Eureka", "description" : "Archimedes", "status" : ["pending", "done"], "due-date" : "2020-08-08" }`<br>
-  **Required**
-  - `title` : string
-  - `description` : string
-  - `status` :  string (pending/done)
-  - `due_date` : date (YYYY-MM-DD)
-
-* **Success Response:**
-
-  * **Code:** 201 <br />
-    **Content:**<br>
-     `{
-    "id": 6,
-    "title": "halal bihalal",
-    "description": "rangka hari raya",
-    "status": "pending",
-    "due_date": "2020-05-27T00:00:00.000Z",
-    "updatedAt": "2020-03-02T10:10:40.754Z",
-    "createdAt": "2020-03-02T10:10:40.754Z"
-}`<br>
-<br>
-   **OR**
-   <BR>
-   `{
-    "id": 12,
-    "title": "nyebat",
-    "description": "nyebat",
-    "status": "pending",
-    "due_date": "2020-08-07T17:00:00.000Z",
-    "updatedAt": "2020-03-02T15:19:24.046Z",
-    "createdAt": "2020-03-02T15:19:24.046Z"
-}`<br><br>
- 
-* **Error Responses:**
-  * **Code:** 400 VALIDATION ERROR <br />
-    **Content:** <br>
-    `{
-    "message": [
-        "Due date must be today or later"
-    ]
-    }`
-    <br>
-    **OR**
-    `{
-    "message": [
-        "Title must be filled"
-    ]
-    }`
-
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** <br>
-     `{
-    "message": [
-        "INTERNAL SERVER ERROR"
-    ]
-    }`
-<br>
-<hr>
-<br>
-
-**Read Todos**
-----
-  Returns a list of all to-dos
-
-* **URL**
-
-  /todos/
-
-* **Method:**
-
-  `GET`
-  
-*  **URL Params**
-    None
-
-* **Data Params**<br>
-   None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-    <br>
-    `{
-    "todos": [
-        {
-            "id": 3,
-            "title": "beli baju",
-            "description": "rangka hari raya",
-            "status": "pending",
-            "due_date": "2020-05-31T00:00:00.000Z",
-            "createdAt": "2020-03-02T08:01:15.475Z",
-            "updatedAt": "2020-03-02T08:01:15.475Z"
-        },
-        {
-            "id": 5,
-            "title": "ziarah",
-            "description": "rangka hari raya",
-            "status": "pending",
-            "due_date": "2020-04-24T00:00:00.000Z",
-            "createdAt": "2020-03-02T08:03:47.179Z",
-            "updatedAt": "2020-03-02T08:03:47.179Z"
-        },
-        {
-            "id": 6,
-            "title": "halal bihalal",
-            "description": "rangka hari raya",
-            "status": "pending",
-            "due_date": "2020-05-27T00:00:00.000Z",
-            "createdAt": "2020-03-02T10:10:40.754Z",
-            "updatedAt": "2020-03-02T10:10:40.754Z"
-        }
-    ],
-    "message": "Here are the complete list"
-}`
- 
-* **Error Responses:**
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** 
-    <br>
-    `{
-    "message": [
-        "INTERNAL SERVER ERROR"
-    ]
-    }`
-
-<br>
-<hr>
-<br>
-
-**Read Todo By Id**
-----
-  Returns a to-do activity based on ID
-
-* **URL**
-
-  /todos/:id
-
-* **Method:**
-
-  `GET`
-  
-*  **URL Params**
-    `:id [integer]`
-
-* **Data Params**<br>
-   None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** <br>
-    `{
-    "todo": [
-        {
-            "id": 15,
-            "title": "beli kue",
-            "description": "sajen",
-            "status": "pending",
-            "due_date": "2020-04-05T00:00:00.000Z",
-            "UserId": 27,
-            "createdAt": "2020-03-05T03:34:46.593Z",
-            "updatedAt": "2020-03-05T03:34:46.593Z",
-            "User": {
-                "id": 27,
-                "email": "maxwell.hamzah@gmail.com"
-            }
-        }
-    ],
-    "message": "Entry found",
-    "decoded": {
-        "id": 27,
-        "email": "maxwell.hamzah@gmail.com",
-        "iat": 1583508900
-    }
-  }`
- 
-* **Error Responses:**
-  * **Code:** 400 UNAUTHORIZED ACCESS <br />
-    **Content:** <br>
-    `{
-    "message": "UNAUTHORIZED ACCESS"
-    }`
-
-  <br><br>
-
-  * **Code:** 404 ENTRY NOT FOUND <br />
-    **Content:** <br>
-    `{
-    "message": "ENTRY NOT FOUND"
-    }`
-
-<br>
-<hr>
-<br>
-
-**Update Todo**
-----
-  Update to-do entry by Id.
-
-* **URL**
-
-  /todos/:id
-
-* **Method:**
-
-  `PUT`
-  
-*  **URL Params**
-    `:id [integer]`
-
-* **Data Params**<br>
-  `{ "title" : "Eureka", "description" : "Archimedes", "status" : ["pending", "done"], "due-date" : "2020-08-08" }`<br>
-  **Required**
-  - `title` : string
-  - `description` : string
-  - `status` :  string
-  - `due_date` : date (YYYY-MM-DD)
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** <br>
-    `{
-    "todo": [
-        {
-            "id": 3,
-            "title": "bikin nastar",
-            "description": "hari raya",
-            "status": "pending",
-            "due_date": "2020-05-01T00:00:00.000Z",
-            "createdAt": "2020-03-02T08:01:15.475Z",
-            "updatedAt": "2020-03-02T10:44:33.300Z"
-        }
-    ],
-    "message": "Entry updated"
-}`
- 
-* **Error Responses:**
-
-  * **Code:** 400 UNAUTHORIZED ACCESS <br />
-    **Content:** <br>
-    `{
-    "message": "UNAUTHORIZED ACCESS"
-    }`
-
-  <br>
-
-  * **Code:** 404 ENTRY NOT FOUND <br />
-    **Content:** <br>
-    `{
-    "message": "ENTRY NOT FOUND"
-    }`
-
-  <br>
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** <BR>
-    `{
-    "message": [
-        "INTERNAL SERVER ERROR"
-    ]
-    }`
-<br>
-<hr>
-<br>
-
-**Delete Todo**
-----
-  Delete to-do entry by Id.
-
-* **URL**
-
-  /todos/:id
-
-* **Method:**
-
-  `DELETE`
-  
-*  **URL Params**
-    `:id [integer]`
-
-* **Data Params**<br>
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `{
-    "todo": 1,
-    "message": "Delete success for ID 3"
-}`
- 
-* **Error Responses:**
-
-  * **Code:** 400 UNAUTHORIZED ACCESS <br />
-    **Content:** <br>
-    `{
-    "message": "UNAUTHORIZED ACCESS"
-    }`
-
-  <br>
-
-  * **Code:** 404 ENTRY NOT FOUND <br />
-    **Content:** <br>
-    `{
-    "message": "ENTRY NOT FOUND"
-    }`
-
-  <br>
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** <BR>
-    `{
-    "message": [
-        "INTERNAL SERVER ERROR"
-    ]
-    }`
-<br>
-<hr>
-<br>
-
-<br>
-<br>
-<HR>
-<HR>
-
 **USER**
 -----
 
@@ -357,7 +9,7 @@
 
 * **URL**
 
-  /users/signup
+  /users/register
 
 * **Method:**
 
@@ -366,7 +18,7 @@
 *  **URL Params**
     None
 
-* **Data Params**<br>
+* **Body/Form Params**<br>
   `{ "email" : "john_doe@sample.com", "password" : "johndoe1" }`<br>
   **Required**
   - `email` : string
@@ -378,38 +30,38 @@
   * **Code:** 200 <br />
     **Content:**<br>
     `{
-    "datum": {
+    "data": {
         "id": 9,
         "email": "jose_mourinho@liverpoolfc.uk",
+        "location": "-6.132;10.234"
         "password": "$2a$10$7zt.ibh3cp2eBD7pN9AjCuQ5rwmiyQMv7PVFNxq9uS/Qbag3TUHa2",
         "updatedAt": "2020-03-03T11:29:45.084Z",
         "createdAt": "2020-03-03T11:29:45.084Z"
-    },
-    "message": "Signup Success. Please Signin to Continue"
+    }
   }`
      
 
 * **Error Responses:**
 
-  * **Code:** 400 SEQUELIZE VALIDATION ERROR<br />
+  * **Code:** 400 VALIDATION ERROR<br />
     **Content:**<br>
     `{
     "message": [
-        "email must be unique"
+        "EMAIL FORMAT INVALID"
     ]
     }`
     <br>
     **OR**
     `{
     "message": [
-        "Please enter valid email format e.g. 'john_doe@domain.com'"
+        "EMAIL IS TAKEN"
     ]
     }`
     <br>
     **OR**
     `{
     "message": [
-        "Passwords must be between 8-16 characters long"
+        "PASSWORDS MUST BETWEEN 6-16 CHARS"
     ]
     }`
 
@@ -417,13 +69,13 @@
 <hr>
 <br>
 
-**Signin**
+**Login**
 ----
   Login user
 
 * **URL**
 
-  /users/signin
+  /users/login
 
 * **Method:**
 
@@ -432,7 +84,7 @@
 *  **URL Params**
     None
 
-* **Data Params**<br>
+* **Data Params**
 `{ "email" : "john_doe@sample.com", "password" : "johndoe1" }`<br>
   **Required**
   - `email` : string
@@ -444,7 +96,7 @@
   * **Code:** 200 <br />
     **Content:**<br>
     `{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjcmlzdGlhbm9fcm9uYWxkb0BsaXZlcnBvb2xmYy51ayIsImlhdCI6MTU4MzIzNzgwOH0.eUjWk-QOFVss77WLfbbqFvt9rKuLNCNk4xEzCSiAdYk"
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjcmlzdGlhbm9fcm9uYWxkb0BsaXZlcnBvb2xmYy51ayIsImlhdCI6MTU4MzIzNzgwOH0.eUjWk-QOFVss77WLfbbqFvt9rKuLNCNk4xEzCSiAdYk"
 }`
      
 
@@ -459,7 +111,11 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR<br />
     **Content:**<br>
-    `Cannot POST /users/signin1`
+     `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
 
 <br>
 <hr>
@@ -471,7 +127,7 @@
 
 * **URL**
 
-  /users/googleSignin
+  /users/googleLogin
 
 * **Method:**
 
@@ -480,7 +136,7 @@
 *  **URL Params**
     None
 
-* **Data Params**<br>
+* **Body/Form Params**<br>
   **Required**
   - GMail Username
   - GMail Passord
@@ -496,3 +152,791 @@
      
 <br>
 <hr>
+<br>
+
+**Fetch All**
+----
+  Fetch list of all users
+
+* **URL**
+
+  /users/fetchall
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+    None
+
+* **Body/Form Params**<br>
+    None
+
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**<br>
+    `{
+    "data: [
+        {
+            "id": 4,
+            "email": "user3@mail.com",
+            "location": "-6.1741;106.8296",
+            "createdAt": "2020-03-31T10:44:22.376Z",
+            "updatedAt": "2020-03-31T10:44:22.376Z"
+        },
+        {
+            "id": 1,
+            "email": "user@mail.com",
+            "location": "-6.1741;106.8296",
+            "createdAt": "2020-03-30T15:22:08.871Z",
+            "updatedAt": "2020-03-30T15:22:08.871Z"
+        },
+        {
+            "id": 2,
+            "email": "user1@mail.com",
+            "location": "-6.1741;106.8296",
+            "createdAt": "2020-03-30T15:22:30.658Z",
+            "updatedAt": "2020-03-30T15:22:30.658Z"
+        },
+        {
+            "id": 3,
+            "email": "user2@mail.com",
+            "location": "-6.1741;106.8296",
+            "createdAt": "2020-03-30T15:22:39.148Z",
+            "updatedAt": "2020-03-30T15:22:39.148Z"
+        },
+        {
+            "id": 7,
+            "email": "user4@mail.com",
+            "location": "-6.1741;106.8296",
+            "createdAt": "2020-03-31T11:28:04.345Z",
+            "updatedAt": "2020-03-31T11:28:04.345Z"
+        }
+    ]
+}`
+
+<br>
+<hr>
+<br>
+
+**PROJECT**
+-----------
+<hr>
+
+**Fetch Projects**
+----
+  Returns a list of all projects where currently logged in user is involved.
+
+* **URL**
+
+  /projects/
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+    None
+
+* **Body/Form Params**<br>
+   None
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    <br>
+    `{
+    "data": [
+        {
+            "ProjectId": 2,
+            "UserId": 1,
+            "createdAt": "2020-03-30T15:24:12.209Z",
+            "updatedAt": "2020-03-30T15:24:12.209Z",
+            "Project": {
+                "id": 2,
+                "UserId": 1,
+                "title": "liwetan"
+            },
+            "User": {
+                "id": 1,
+                "email": "user@mail.com",
+                "location": "-6.1741;106.8296"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** 
+    <br>
+    `{
+    "message": [
+        "NOT FOUND"
+    ]
+    }`
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    <br>
+    `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
+
+<br>
+<hr>
+<br>
+
+**Get Project By Id**
+----
+  Returns a project based on ID
+
+* **URL**
+
+  /projects/:id
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+    `:id` : integer(required)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+   None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br>
+   `{
+    "data": [
+        {
+            "ProjectId": 2,
+            "UserId": 1,
+            "createdAt": "2020-03-30T15:24:12.209Z",
+            "updatedAt": "2020-03-30T15:24:12.209Z",
+            "Project": {
+                "id": 2,
+                "UserId": 1,
+                "title": "liwetan"
+            },
+            "User": {
+                "id": 1,
+                "email": "user@mail.com",
+                "location": "-6.1741;106.8296"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+
+<br>
+<hr>
+<br>
+
+**Create Project**
+----
+  Create project. Current user will automatically be project owner
+
+* **URL**
+
+  /projects/
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+    None
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  `{ "title" : "Eureka" }`<br>
+  **Required**
+  - `title` : string
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:**<br>
+    `{
+    "data": [
+        {
+            "ProjectId": 2,
+            "UserId": 1,
+            "createdAt": "2020-03-30T15:24:12.209Z",
+            "updatedAt": "2020-03-30T15:24:12.209Z",
+            "Project": {
+                "id": 2,
+                "UserId": 1,
+                "title": "liwetan"
+            },
+            "User": {
+                "id": 1,
+                "email": "user@mail.com",
+                "location": "-6.1741;106.8296"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+  * **Code:** 400 VALIDATION ERROR <br />
+    **Content:** <br>
+    `{
+    "message": [
+        "TITLE MUST BE FILLED"
+    ]
+    }`
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** <br>
+     `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
+<br>
+<hr>
+<br>
+
+**Invite**
+----
+  Assign member into a project.
+
+* **URL**
+
+  /projects/invite
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+    None
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  `{ "email" : "mail@user.com", "projectId": 2 }`<br>
+  **Required**
+  - `email` : string
+  - `projectId` : integer
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:**<br>
+    `{
+    "data": [
+        {
+            "id": 3
+            "ProjectId": 2,
+            "UserId": 4,
+            "createdAt": "2020-03-30T15:24:12.209Z",
+            "updatedAt": "2020-03-30T15:24:12.209Z",
+            "Project": {
+                "id": 2,
+                "UserId": 4,
+                "title": "liwetan"
+            },
+            "User": {
+                "id": 4,
+                "email": "user@mail.com",
+                "location": "-6.1741;106.8296"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+  * **Code:** 400 VALIDATION ERROR <br />
+    **Content:** <br>
+    `{
+    "message": [
+        "DUPLICATE ASSIGNMENT"
+    ]
+    }`
+    <br>
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+     `{
+    "message": [
+        "NOT FOUND"
+    ]
+    }`
+<br>
+<hr>
+<br>
+
+
+**Update Project**
+----
+  Update project by ID
+
+* **URL**
+
+  /projects/:id
+
+* **Method:**
+
+  `PUT`
+  
+*  **URL Params**
+    `:id` : integer(required)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  `{ "title" : "Eureka", "userid" : 1 }`<br>
+  **Required**
+  - `title` : string
+  - `userid` : integer
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:** <br>
+   `{
+    "data": [
+        {
+            "id": 3
+            "ProjectId": 2,
+            "UserId": 4,
+            "createdAt": "2020-03-30T15:24:12.209Z",
+            "updatedAt": "2020-03-30T15:24:12.209Z",
+            "Project": {
+                "id": 2,
+                "UserId": 4,
+                "title": "liwetan"
+            },
+            "User": {
+                "id": 4,
+                "email": "user@mail.com",
+                "location": "-6.1741;106.8296"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+
+<br>
+<hr>
+<br>
+
+**Delete Project**
+----
+  Delete project by Id.
+
+* **URL**
+
+  /todos/:id
+
+* **Method:**
+
+  `DELETE`
+  
+*  **URL Params**
+    `:id` : integer(required)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{
+    "data": {
+      [1]
+    }
+}`
+ 
+* **Error Responses:**
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+
+<br>
+<hr>
+<br>
+
+
+
+**Fetch Todos**
+----
+  Returns a list of all todos corresponding to a project ID
+
+* **URL**
+
+  /projects/:projectid/todos/
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+    `:projectid` : integer (required)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+   None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    <br>
+    `{
+    "data": [
+        {
+            "id": 2,
+            "title": "beli kurma",
+            "description": "ajwa",
+            "status": "pending",
+            "due_date": "2020-06-06T00:00:00.000Z",
+            "ProjectId": 2,
+            "createdAt": "2020-03-30T15:52:30.036Z",
+            "updatedAt": "2020-03-30T15:52:30.036Z",
+            "Project": {
+                "id": 2,
+                "UserId": 1,
+                "title": "liwetan",
+                "createdAt": "2020-03-30T15:24:12.186Z",
+                "updatedAt": "2020-03-30T15:24:12.186Z"
+            }
+        },
+        {
+            "id": 4,
+            "title": "cari daun pisang",
+            "description": "pisang raja",
+            "status": "pending",
+            "due_date": "2020-07-07T00:00:00.000Z",
+            "ProjectId": 2,
+            "createdAt": "2020-03-30T15:53:55.352Z",
+            "updatedAt": "2020-03-31T08:29:43.647Z",
+            "Project": {
+                "id": 2,
+                "UserId": 1,
+                "title": "liwetan",
+                "createdAt": "2020-03-30T15:24:12.186Z",
+                "updatedAt": "2020-03-30T15:24:12.186Z"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    <br>
+    `{
+    "message": [
+        "INTERNAL SERVER ERROR"
+    ]
+    }`
+
+<br>
+<hr>
+<br>
+
+**Create Todo**
+----
+  Create a todo based on project ID
+
+* **URL**
+
+  /projects/:projectid/todos/
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+    `:projectid` : integer (required)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  **Required**
+  - `title` : string
+  - `description` : string
+  - `due_date` : string (YYYY-MM-DD)
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br>
+    `{
+    "data": {
+        "id": 7,
+        "title": "petik tomat",
+        "description": "hidroponik",
+        "status": "pending",
+        "due_date": "2020-06-06T00:00:00.000Z",
+        "ProjectId": 2,
+        "updatedAt": "2020-03-31T16:04:24.344Z",
+        "createdAt": "2020-03-31T16:04:24.344Z"
+    }
+}`
+ 
+* **Error Responses:**
+  * **Code:** 400 VALIDATION ERROR <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "DATE LAPSED"
+      ]
+    }`
+    **OR**
+    `{
+      "errors": [
+          "invalid input syntax for type timestamp with time zone: \"Invalid date\""
+      ]
+    }`
+    **OR**
+    `{
+      "errors": [
+        "TITLE MUST BE FILLED"
+      ]   
+    }`
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+
+<br>
+<hr>
+<br>
+
+**Update Todo**
+----
+  Update to-do entry by ID, corresponding to a project's ID
+
+* **URL**
+
+  /projects/:projectid/todos/:todoid
+
+* **Method:**
+
+  `PUT`
+  
+*  **URL Params**
+  -  `:projectid [integer]`
+  -  `:todoid [integer]`
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  **Required**
+  - `title` : string
+  - `description` : string
+  - `due_date` : string (YYYY-MM-DD)
+  - `status` : string
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br>
+    `{
+    "data": {
+        "id": 7,
+        "title": "Eureka",
+        "description": "Archimedes",
+        "status": "done",
+        "due_date": "2020-08-08T00:00:00.000Z",
+        "ProjectId": 2,
+        "updatedAt": "2020-03-31T16:04:24.344Z",
+        "createdAt": "2020-03-31T16:04:24.344Z"
+    }
+}`
+ 
+* **Error Responses:**
+  * **Code:** 400 VALIDATION ERROR <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "DATE LAPSED"
+      ]
+    }`
+    **OR**
+    `{
+      "errors": [
+          "invalid input syntax for type timestamp with time zone: \"Invalid date\""
+      ]
+    }`
+    **OR**
+    `{
+      "errors": [
+        "TITLE MUST BE FILLED"
+      ]   
+    }`
+
+  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+<br>
+<hr>
+<br>
+
+**Delete Todo**
+----
+  Delete to-do entry by Id.
+
+* **URL**
+
+  /projects/:projectid/todos/:todoid
+
+* **Method:**
+
+  `DELETE`
+  
+*  **URL Params**
+  -  `:projectid [integer]`
+  -  `:todoid [integer]`
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{
+    "data": "{
+      [1]
+    }"
+}`
+ 
+* **Error Responses:**
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+<br>
+<hr>
+<br>
+
+

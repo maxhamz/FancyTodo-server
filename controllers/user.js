@@ -181,7 +181,7 @@ class UserController {
             .then(result => {
                 console.log("SUCCESS FETCHING ALL USERS");
                 res.status(200).json({
-                    result
+                    data: result
                 })
             })
             .catch(err => {

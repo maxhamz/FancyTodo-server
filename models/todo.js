@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     due_date: {
       type: DataTypes.DATE,
+      defaultValue: new Date(),
       validate: {
         beforeToday() {
           if (this.due_date < new Date()) {
