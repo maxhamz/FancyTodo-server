@@ -24,10 +24,16 @@ let emailAddress
 let passcode
 let accessToken
 let latlon
+let payload
 
 class UserController {
 
     static register(req, res, next) {
+
+        console.log(">>> REGISTER FROM SERVER");
+        console.log("REQ BODY IS");
+        console.log(req.body);
+
         User.findOne({
                 where: {
                     email: req.body.email
@@ -62,7 +68,13 @@ class UserController {
 
     static login(req, res, next) {
 
+        console.log(">>> LOGIN FROM SERVER");
+        console.log("REQ BODY IS");
+        console.log(req.body);
+
         let userid
+
+        // blame 
         emailAddress = req.body.email
         passcode = req.body.password
 
@@ -92,7 +104,7 @@ class UserController {
 
                 latlon = String(response.lat) + ";" + String(response.lon)
 
-                let payload = {
+                payload = {
                     id: userid,
                     email: emailAddress,
                     location: latlon
@@ -109,25 +121,29 @@ class UserController {
     }
 
     static googleLogin(req, res, next) {
-        console.log(`>>> GOOGLE LOGIN <<<`);
-        console.log("CREDENTIALS:");
-        accessToken = req.headers.token
-        console.log(accessToken, '<---- ACCESS TOKEN END ');
-        googleClient.verifyIdToken({
-                idToken: accessToken,
-                audience: process.env.GOOGLE_CLIENT_ID
+
+        accessToken = req.headers.access_token
+
+        // GET LOCATION DATA FIRST
+        return getLocation()
+            .then(response => {
+
+                latlon = String(response.lat) + ";" + String(response.lon)
+
+                return googleClient.verifyIdToken({
+                    idToken: accessToken,
+                    audience: process.env.GOOGLE_CLIENT_ID
+                })
+
             })
             .then(ticket => {
-                console.log(`TICKET FOUND!`);
-                console.log(ticket);
+    
                 payload = ticket.getPayload();
-                let userId = payload['sub']
-                emailAddress = payload.email
 
-                console.log(`TICKET PAYLOAD:`);
-                console.log(payload);
+                // // let userId = payload['sub']
+                emailAddress = payload['email']
 
-                return User.findAll({
+                return User.findOne({
                     where: {
                         email: emailAddress
                     }
@@ -135,38 +151,32 @@ class UserController {
 
 
             })
-            .then(result1 => {
-                console.log("RESULT 1 PAYLOAD");
-                console.log(result1);
-                if (result1.length === 0) {
-
+            .then(response => {
+                if (response) {
+                    return response
+                } else {
                     return User.create({
                         email: emailAddress,
-                        password: process.env.GOOGLE_DEFAULT_PASSWORD //leviathan
+                        password: process.env.DEFAULT_SECRET,
+                        location: latlon
                     })
-                } else {
-                    return result1[0]
                 }
             })
-            .then(result2 => {
-                payload = {
-                    id: result2.id,
-                    email: result2.email,
-                }
-                console.log(`RESULT 2 PAYLOAD:`);
-                console.log(payload);
+            .then(response => {
 
-                // accessToken = createToken(payload)
-                // console.log(`after result2, accessToken is`);
-                // console.log(accessToken);
-                // req.headers.token = accessToken
+                payload = {
+                    id: response.id,
+                    email: response.email,
+                    location: response.location
+                }
+
+                accessToken = createToken(payload)
+
                 res.status(200).json({
-                    token: createToken(payload)
+                    access_token: accessToken
                 })
             })
             .catch(err => {
-                console.log("ERROR IN GOOGLE AUTH");
-                console.log(err);
                 next(err)
             })
     }
