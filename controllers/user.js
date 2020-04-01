@@ -120,6 +120,7 @@ class UserController {
             })
     }
 
+
     static googleLogin(req, res, next) {
 
         accessToken = req.headers.access_token
@@ -181,6 +182,7 @@ class UserController {
             })
     }
 
+    
     static fetchAll(req, res, next) {
         console.log(">>> CONTROLLERS/USER: SHOW ALL USERS");
         User.findAll({

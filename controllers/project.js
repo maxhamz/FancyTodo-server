@@ -18,8 +18,17 @@ class ProjectController {
                 where: {
                     UserId: req.decoded.id
                 },
-                include: [{
+                include: [
+                    {
                         model: Project,
+                        include: {
+                            model: User,
+                            attributes: {
+                                exclude: [
+                                    'password', 'createdAt', 'updatedAt'
+                                ]
+                            }
+                        },
                         attributes: {
                             exclude: [
                                 'createdAt', 'updatedAt'
@@ -39,14 +48,14 @@ class ProjectController {
             })
             .then(response => {
 
-                if(response) {
+                if (response) {
                     return res.status(200).json({
                         data: response
                     })
                 } else {
                     throw customError(404, 'NOT FOUND')
                 }
-                
+
             })
             .catch(err => {
                 next(err)
@@ -61,13 +70,23 @@ class ProjectController {
                     id: +req.params.id,
                     UserId: req.decoded.id
                 },
-                include: [{
+                include: [
+                    {
                         model: Project,
+                        include: {
+                            model: User,
+                            attributes: {
+                                exclude: [
+                                    'password', 'createdAt', 'updatedAt'
+                                ]
+                            }
+                        },
                         attributes: {
                             exclude: [
                                 'createdAt', 'updatedAt'
                             ]
                         }
+
                     },
                     {
                         model: User,
@@ -178,84 +197,84 @@ class ProjectController {
 
     static updateProject(req, res, next) {
         Project.findOne({
-            where: {
-                id: +req.params.id,
-                UserId: req.decoded.id
-            },
-            include: [
-                {
+                where: {
+                    id: +req.params.id,
+                    UserId: req.decoded.id
+                },
+                include: [{
                     model: User,
                     attributes: {
                         exclude: [
                             'password', 'createdAt', 'updatedAt'
                         ]
                     }
+                }]
+            })
+            .then(response => {
+                if (response) {
+                    return Project.update({
+                        title: req.body.title,
+                        UserId: +req.body.userid
+                    }, {
+                        where: {
+                            id: +req.params.id
+                        },
+                        returning: true
+                    })
+
+                } else {
+                    throw new customError(404, 'NOT FOUND')
                 }
-            ]
-        })
-        .then(response => {
-            if (response) {
-                return Project.update({
-                    title: req.body.title,
-                    UserId: +req.body.userid
-                }, {
-                    where: {
-                        id: +req.params.id
-                    },
-                    returning: true
+
+            })
+            .then(response => {
+                res.status(200).json({
+                    data: response[1][0]
                 })
-
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            }
-
-        })
-        .then(response => {
-            res.status(200).json({data: response[1][0]})
-        })
-        .catch(err => {
-            next(err)
-        })
+            })
+            .catch(err => {
+                next(err)
+            })
 
     }
 
 
     static dropProject(req, res, next) {
         Project.findOne({
-            where: {
-                id: +req.params.id,
-                UserId: req.decoded.id
-            },
-            include: [
-                {
+                where: {
+                    id: +req.params.id,
+                    UserId: req.decoded.id
+                },
+                include: [{
                     model: User,
                     attributes: {
                         exclude: [
                             'password', 'createdAt', 'updatedAt'
                         ]
                     }
+                }]
+            })
+            .then(response => {
+                if (response) {
+                    return Project.destroy({
+                        where: {
+                            id: +req.params.id
+                        }
+                    })
+
+                } else {
+                    throw new customError(404, 'NOT FOUND')
                 }
-            ]
-        })
-        .then(response => {
-            if (response) {
-                return Project.destroy({
-                    where: {
-                        id: +req.params.id
-                    }
+
+            })
+            .then(response => {
+                res.status(200).json({
+                    data: response
                 })
-
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            }
-
-        })
-        .then(response => {
-            res.status(200).json({data: response})
-        })
-        .catch(err => {
-            next(err)
-        })
+            })
+            .catch(err => {
+                next(err)
+            })
 
     }
 
@@ -334,99 +353,103 @@ class ProjectController {
 
         // ENSURE PROJECT DO EXIST
         Project.findOne({
-            where: {
-                id: +req.params.projectid
-            }
-        })
-        .then(response => {
-            
-            if(response) {
+                where: {
+                    id: +req.params.projectid
+                }
+            })
+            .then(response => {
 
-                // AND MAKE SURE THE TODO WE'RE LOOKING ABOUT DO EXIST!
-                return Todo.findOne({
-                    where: {
-                        id: +req.params.todoid
-                    }
+                if (response) {
+
+                    // AND MAKE SURE THE TODO WE'RE LOOKING ABOUT DO EXIST!
+                    return Todo.findOne({
+                        where: {
+                            id: +req.params.todoid
+                        }
+                    })
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
+            })
+            .then(response => {
+
+                if (response) {
+
+                    return Todo.update({
+                        title: req.body.title,
+                        description: req.body.description,
+                        status: req.body.status,
+                        due_date: new Date(req.body.due_date)
+                    }, {
+                        where: {
+                            id: +req.params.todoid,
+                            ProjectId: project_id
+                        },
+                        returning: true
+                    })
+
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
+
+            })
+            .then(response => {
+                res.status(200).json({
+                    data: response
                 })
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            } 
-        })
-        .then(response => {
-
-            if(response) {
-
-                return Todo.update({
-                    title: req.body.title,
-                    description: req.body.description,
-                    status: req.body.status,
-                    due_date: new Date(req.body.due_date)
-                }, {
-                    where: {
-                        id: +req.params.todoid,
-                        ProjectId: project_id
-                    },
-                    returning: true
-                })
-
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            }
-            
-        })
-        .then(response => {
-            res.status(200).json({data: response})
-        })
-        .catch(err => {
-            next(err)
-        })
+            })
+            .catch(err => {
+                next(err)
+            })
 
     }
 
 
-    static deleteTodo (req, res, next) {
+    static deleteTodo(req, res, next) {
 
         // ENSURE PROJECT DO EXIST
         Project.findOne({
-            where: {
-                id: +req.params.projectid
-            }
-        })
-        .then(response => {
-            
-            if(response) {
+                where: {
+                    id: +req.params.projectid
+                }
+            })
+            .then(response => {
 
-                // AND MAKE SURE THE TODO WE'RE LOOKING ABOUT DO EXIST!
-                return Todo.findOne({
-                    where: {
-                        id: +req.params.todoid
-                    }
-                })
+                if (response) {
 
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            }
-        })
-        .then(response => {
-            if(response) {
-                return Todo.destroy({
-                    where: {
-                        id: +req.params.todoid,
-                        ProjectId: project_id
-                    },
-                    returning: true
+                    // AND MAKE SURE THE TODO WE'RE LOOKING ABOUT DO EXIST!
+                    return Todo.findOne({
+                        where: {
+                            id: +req.params.todoid
+                        }
+                    })
+
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
+            })
+            .then(response => {
+                if (response) {
+                    return Todo.destroy({
+                        where: {
+                            id: +req.params.todoid,
+                            ProjectId: project_id
+                        },
+                        returning: true
+                    })
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
+
+            })
+            .then(response => {
+                res.status(201).json({
+                    data: response
                 })
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            }
-            
-        })
-        .then(response => {
-            res.status(201).json({data: response})
-        })
-        .catch(err => {
-            next(err)
-        })
+            })
+            .catch(err => {
+                next(err)
+            })
 
     }
 
