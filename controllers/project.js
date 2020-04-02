@@ -14,10 +14,13 @@ let project_id
 class ProjectController {
 
     static fetchProjects(req, res, next) {
-        ProjectUser.findAll({
+        return ProjectUser.findAll({
                 where: {
                     UserId: req.decoded.id
                 },
+                order: [
+                            ['updatedAt', 'DESC']
+                        ],
                 include: [
                     {
                         model: Project,
@@ -65,7 +68,7 @@ class ProjectController {
 
     static getProjectById(req, res, next) {
 
-        ProjectUser.findOne({
+        return ProjectUser.findOne({
                 where: {
                     id: +req.params.id,
                     UserId: req.decoded.id
@@ -116,14 +119,19 @@ class ProjectController {
 
     static createProject(req, res, next) {
 
-        Project.create({
+        console.log("CONTROLLERS: CREATE PTOJECT");
+
+        return Project.create({
                 UserId: req.decoded.id,
                 title: req.body.title
             })
             .then(response => {
+                console.log("PROJECT CREATED");
+                console.log(response);
                 user_id = response.UserId
                 project_id = response.id
 
+                
                 return ProjectUser.create({
                     UserId: user_id,
                     ProjectId: project_id,
@@ -131,12 +139,15 @@ class ProjectController {
                 })
             })
             .then(response => {
+                console.log("PROJECT USER CREATED");
+                console.log(response);
                 return res.status(201).json({
                     data: response
                 })
 
             })
             .catch(err => {
+                console.log("ERROR CREATING PROJECT");
                 next(err)
             })
 
@@ -144,6 +155,8 @@ class ProjectController {
 
 
     static invite(req, res, next) {
+        console.log("INVITE MEMBER FROM CONTROLLER");
+        console.log(req.body);
 
         project_id = +req.body.projectId
 
@@ -157,7 +170,7 @@ class ProjectController {
 
                 // 
                 if (response) {
-
+                    console.log("USER FOUND");
                     user_id = response.id
 
                     // CHECK IF PROJECT HAS THAT MEMBER ALREADY
@@ -173,6 +186,8 @@ class ProjectController {
                 }
             })
             .then(response => {
+                console.log("WHAT'S VERDICT2");
+                console.log(response);
                 if (response) {
                     throw new customError(400, 'DUPLICATE ASSIGNMENT')
                 } else {
@@ -184,6 +199,7 @@ class ProjectController {
 
             })
             .then(response => {
+                console.log("INVITATION SENT");
                 return res.status(201).json({
                     data: response
                 })
@@ -283,7 +299,7 @@ class ProjectController {
 
         project_id = req.params.projectid
 
-        ProjectUser.findOne({
+        return ProjectUser.findOne({
                 where: {
                     UserId: req.decoded.id,
                     ProjectId: project_id
@@ -295,7 +311,10 @@ class ProjectController {
                         where: {
                             ProjectId: response.ProjectId
                         },
-                        include: [Project]
+                        include: [Project],
+                        order: [
+                            ['due_date', 'ASC']
+                        ]
                     })
 
                 } else {
@@ -316,6 +335,9 @@ class ProjectController {
 
     static createTodo(req, res, next) {
 
+        console.log("CREATING TODO");
+        console.log(req.body);
+
         project_id = req.params.projectid
 
         ProjectUser.findOne({
@@ -326,6 +348,10 @@ class ProjectController {
             })
             .then(response => {
                 if (response) {
+
+                    console.log("PROJECT FOUND");
+                    console.log(response);
+
                     return Todo.create({
                         title: req.body.title,
                         description: req.body.description,
@@ -339,6 +365,9 @@ class ProjectController {
                 }
             })
             .then(response => {
+
+                console.log("NEW TODO CREATED");
+                console.log(response );
                 return res.status(201).json({
                     data: response
                 })
