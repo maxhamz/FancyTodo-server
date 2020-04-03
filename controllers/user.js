@@ -107,7 +107,7 @@ class UserController {
                 payload = {
                     id: userid,
                     email: emailAddress,
-                    location: latlon
+                    location: latlon || 'HK'
                 }
 
                 accessToken = createToken(payload)
@@ -159,7 +159,7 @@ class UserController {
                     return User.create({
                         email: emailAddress,
                         password: process.env.DEFAULT_SECRET,
-                        location: latlon
+                        location: latlon || 'HK'
                     })
                 }
             })

@@ -68,29 +68,11 @@ class ProjectController {
 
     static getProjectById(req, res, next) {
 
-        return ProjectUser.findOne({
+        return Project.findOne({
                 where: {
-                    id: +req.params.id,
-                    UserId: req.decoded.id
+                    id: +req.params.id
                 },
                 include: [
-                    {
-                        model: Project,
-                        include: {
-                            model: User,
-                            attributes: {
-                                exclude: [
-                                    'password', 'createdAt', 'updatedAt'
-                                ]
-                            }
-                        },
-                        attributes: {
-                            exclude: [
-                                'createdAt', 'updatedAt'
-                            ]
-                        }
-
-                    },
                     {
                         model: User,
                         attributes: {
@@ -212,10 +194,11 @@ class ProjectController {
 
 
     static updateProject(req, res, next) {
+
+        console.log("UPDATING PROJECT");
         Project.findOne({
                 where: {
-                    id: +req.params.id,
-                    UserId: req.decoded.id
+                    id: +req.params.id
                 },
                 include: [{
                     model: User,
@@ -228,20 +211,34 @@ class ProjectController {
             })
             .then(response => {
                 if (response) {
-                    return Project.update({
-                        title: req.body.title,
-                        UserId: +req.body.userid
-                    }, {
+
+                    return User.findOne({
                         where: {
-                            id: +req.params.id
-                        },
-                        returning: true
+                            email: req.body.email
+                        }
                     })
 
                 } else {
                     throw new customError(404, 'NOT FOUND')
                 }
 
+            })
+            .then(response => {
+                if (response) {
+
+                    return Project.update({
+                            title: req.body.title,
+                            UserId: response.id
+                        }, {
+                            where: {
+                                id: +req.params.id
+                            },
+                            returning: true
+                        })
+
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
             })
             .then(response => {
                 res.status(200).json({
@@ -378,6 +375,41 @@ class ProjectController {
     }
 
 
+    static getTodoById(req, res, next) {
+
+        project_id = +req.params.projectid
+
+        return Project.findOne({
+                where: {
+                    id: project_id
+                }
+            })
+            .then(response => {
+                if (response) {
+                    return Todo.findOne({
+                        where: {
+                            id: +req.params.todoid
+                        },
+                        include: [Project]
+                    })
+
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
+            })
+            .then(response => {
+                return res.status(200).json({
+                    data: response
+                })
+            })
+            .catch(err => {
+                next(err)
+            })
+
+    }
+
+
+
     static updateTodo(req, res, next) {
 
         // ENSURE PROJECT DO EXIST
@@ -394,7 +426,8 @@ class ProjectController {
                     return Todo.findOne({
                         where: {
                             id: +req.params.todoid
-                        }
+                        },
+                        include: [Project]
                     })
                 } else {
                     throw new customError(404, 'NOT FOUND')

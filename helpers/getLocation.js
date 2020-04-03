@@ -9,17 +9,21 @@ function getLocation() {
     .then(response => {
         let lat = response.data.latitude
         let lon = response.data.longitude
-        let data = {
+        let latLon = {
             lat,
             lon
         }
-        return data
-        // return res.status(200).json({lat, lon})
+
+        // req.location = latLon
+        // next()
+
+        return latLon
 
     }) 
     .catch(err => {
         console.log("ERROR FETCHING GEOLOCATION");
-        next(err)
+        console.log(err);
+        // next(err)
     })
 
 }

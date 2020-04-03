@@ -21,6 +21,7 @@ projectRoute.delete('/:id', po_authorization, ProjectController.dropProject)
  */
 projectRoute.get('/:projectid/todos', authorization, ProjectController.fetchTodos)
 projectRoute.post('/:projectid/todos', authorization, ProjectController.createTodo)
+projectRoute.get('/:projectid/todos/:todoid', authorization, ProjectController.getTodoById)
 projectRoute.put('/:projectid/todos/:todoid', authorization, ProjectController.updateTodo)
 projectRoute.delete('/:projectid/todos/:todoid', authorization, ProjectController.deleteTodo)
 

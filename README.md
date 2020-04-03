@@ -27,7 +27,7 @@
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 201 <br />
     **Content:**<br>
     `{
     "data": {
@@ -333,19 +333,20 @@
    `{
     "data": [
         {
+            "id": 4,
+            "title": "khatam quran",
+            "description": "surah yasin",
+            "status": "pending",
+            "due_date": "2020-07-31T00:00:00.000Z",
             "ProjectId": 2,
-            "UserId": 1,
-            "createdAt": "2020-03-30T15:24:12.209Z",
-            "updatedAt": "2020-03-30T15:24:12.209Z",
+            "createdAt": "2020-04-03T13:44:00.332Z",
+            "updatedAt": "2020-04-03T13:44:00.332Z",
             "Project": {
                 "id": 2,
                 "UserId": 1,
-                "title": "liwetan"
-            },
-            "User": {
-                "id": 1,
-                "email": "user@mail.com",
-                "location": "-6.1741;106.8296"
+                "title": "tahlilan",
+                "createdAt": "2020-04-03T13:36:38.711Z",
+                "updatedAt": "2020-04-03T15:17:09.120Z"
             }
         }
     ]
